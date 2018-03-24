@@ -75,7 +75,7 @@ public class Main extends Application
     String path_Fight = "Carpenter_Brut_Duellist_Battle";
 
     //Audio voor het Main Menu
-    Media BackMain = new Media(new File("Audio/" + path_Main + ".wav").toURI().toString());
+    Media BackMain = new Media(new File("Audio/" + path_Main + ".mp3").toURI().toString());
     MediaPlayer AudioPlayer = new MediaPlayer(BackMain);
     AudioPlayer.setAutoPlay(true);
     MediaView Media = new MediaView(AudioPlayer);
