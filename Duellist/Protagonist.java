@@ -1,7 +1,4 @@
 public class Protagonist
 {
-  public void move()
-  {
-    
-  }
+  private int health = 1;
 }

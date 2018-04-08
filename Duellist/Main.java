@@ -20,6 +20,13 @@ import java.io.File;
 
 public class Main extends Application
 {
+  //De andere classes toevoegen tot één super class.
+  Antagonist Anta = new Antagonist();
+  Protagonist Prot = new Protagonist();
+  Sound Audiophobic = new Sound();
+  //Bullet Bull = new Bullet(x, y);
+
+
   public static void main(String[] args)
   {
     launch(args);
@@ -54,13 +61,16 @@ public class Main extends Application
 
     //Game pane en achtergrond.
     Pane Fight = new Pane();
-    Image Game_Back = new Image("Images/");
+    Image Game_Back = new Image("Images/BackDrop_Fight.png");
     Image Protag = new Image("Models/Protagonist/Main_char_Duellist_helmet_5.png");
     Image Antag = new Image("Models/Antagonist/");
+
     ImageView GV1 = new ImageView(Game_Back);
+    ImageView P1 = new ImageView(Protag);
+    ImageView A1 = new ImageView(Antag);
 
     //Image wordt aangeroepen en gelinkt met het Controls scherm.
-    Fight.getChildren().add(GV1);
+    Fight.getChildren().addAll(GV1, P1, A1);
 
     //Text voor het start scherm
     Text intro = new Text();
@@ -69,16 +79,6 @@ public class Main extends Application
     intro.setFill(Color.BLUE);
     intro.setX(580);
     intro.setY(175);
-
-    //Strings met de namen van de audio.
-    String path_Main = "Carpenter_Brut_Duellist_Main_Menu";
-    String path_Fight = "Carpenter_Brut_Duellist_Battle";
-
-    //Audio voor het Main Menu
-    Media BackMain = new Media(new File("Audio/" + path_Main + ".mp3").toURI().toString());
-    MediaPlayer AudioPlayer = new MediaPlayer(BackMain);
-    AudioPlayer.setAutoPlay(true);
-    MediaView Media = new MediaView(AudioPlayer);
 
     //Button voor de transitie naar het volgende scherm.
     Button play = new Button();
@@ -113,12 +113,18 @@ public class Main extends Application
     Scene Control_Screen = new Scene(Control, 1250, 750);
     Scene Game = new Scene(HUD,1250, 750);
 
+    //Audio voor het main menu
+    Audiophobic.AudioMain();
+
     //Eventhandler button van het main menu.
     play.setOnAction(new EventHandler<ActionEvent>()
     {
       public void handle(ActionEvent event)
       {
         Boot.setScene(Game);
+        P1.setX(200);
+        P1.setY(200);
+        Audiophobic.AudioBattle();
       }
     });
 
@@ -149,11 +155,50 @@ public class Main extends Application
       }
     });
 
+    //EventHandler declaraties voor controls.
+    Fight.setOnKeyPressed(new EventHandler<KeyEvent>()
+    {
+      public void handle(KeyEvent event)
+      {
+        int posX = 0;
+        int posY = 0;
+
+        //Naar boven
+        if (event.getCode() == KeyCode.W)
+        {
+          posY -= 10;
+        }
+
+        //Links
+        else if (event.getCode() == KeyCode.A)
+        {
+          posX -= 10;
+        }
+
+        //Naar onder
+        else if (event.getCode() == KeyCode.S)
+        {
+          posY += 10;
+        }
+
+        //Rechts
+        else if (event.getCode() == KeyCode.D)
+        {
+          posX += 10;
+        }
+
+      }
+    });
+
+    Fight.requestFocus();
+
+    //Het spel dat opstart.
     Boot.setScene(Welcome);
+    Boot.setResizable(false);
     Boot.setTitle("Duellist");
     Boot.show();
-  }
 
+  }
 }
 
 /*Documentatie qua links die ik heb gebruikt:
@@ -161,4 +206,6 @@ public class Main extends Application
 exit(); - https://stackoverflow.com/questions/2670956/how-to-quit-a-java-app-from-within-the-program/2670959
 
 clip.close() - https://stackoverflow.com/questions/11919009/using-javax-sound-sampled-clip-to-play-loop-and-stop-mutiple-sounds-in-a-game
+
+clip.play() - http://www3.ntu.edu.sg/home/ehchua/programming/java/J8c_PlayingSound.html
 */
